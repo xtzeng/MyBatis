@@ -32,10 +32,10 @@
 </logger> 
 
 
-	<!-- 根logger的设置-->
+	<!-- 根logger的设置 <appender-ref ref="myConsole"/>-->
 	<root>
 		<priority value ="debug"/>
-		<appender-ref ref="myConsole"/>
+		
 		<appender-ref ref="IBatis"/>	
 	</root>
 </log4j:configuration>
