@@ -22,7 +22,7 @@ public class JsonAddrTest {
 	    address.setRoad("高新路");
 	    address.setStreate("");
 	    JSONArray json = JSONArray.fromObject(address);
-	    logger.debug(json.toString());
+	    logger.info(json.toString());
 	}
 	
 	

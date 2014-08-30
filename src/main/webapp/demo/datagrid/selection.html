@@ -40,6 +40,7 @@
 		function getSelected(){
 			var row = $('#dg').datagrid('getSelected');
 			if (row){
+				alert(1);
 				$.messager.alert('Info', row.itemid+":"+row.productid+":"+row.attr1);
 			}
 		}

@@ -8,8 +8,8 @@
       <param name="ConversionPattern" value="%-4r [%t] %-5p %c %x - %m%n" /> 
    </layout> 
    <filter class="org.apache.log4j.varia.LevelRangeFilter"> 
-      <param name="LevelMin" value="DEBUG" /> 
-      <param name="LevelMax" value="DEBUG" /> 
+      <param name="LevelMin" value="DEBUG" /> <!-- 指定输出LOG内容的最低等级 --> 
+      <param name="LevelMax" value="ERROR" /> <!-- 指定输出LOG内容的最高等级 --> 
    </filter>
 </appender> 
 
