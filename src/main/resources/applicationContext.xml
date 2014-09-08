@@ -13,61 +13,38 @@
 		http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 	
 	
-	<context:component-scan base-package="com.xt.*" ></context:component-scan>
+	<context:component-scan base-package="com.immutable.alias.*" ></context:component-scan>
+	 <context:property-placeholder location="classpath:jdbc.properties" />
 
-
-	<bean id="myDataSource" class="org.apache.commons.dbcp.BasicDataSource"  destroy-method="close">  
-	    <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>  
-	    <property name="url" value="jdbc:mysql://localhost:3306/test?characterEncoding=utf8"></property>  
-	    <property name="username" value="root"></property>  
-	    <property name="password" value="root"></property>  
-	  
-	    <!-- Connection Pooling Info -->  
+	<!--配置数据源-->  
+    <bean id="myDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">  
+	    <property name="driverClassName">  
+	        <value>${driver}</value>  
+	    </property>  
+	    <property name="url">  
+	        <value>${url}</value>  
+	    </property>  
+	    <property name="username">  
+	        <value>${username}</value>  
+	    </property>  
+	    <property name="password">  
+	        <value>${password}</value>  
+	    </property>  
+	      <!-- Connection Pooling Info -->  
 	    <property name="maxActive" value="20" />  
 	    <property name="maxIdle" value="5" />  
 	    <property name="maxWait" value="5000" />  
-	    <!-- <property name="validationQuery" value="select count(0) from admin" />  --> 
+	</bean>  
+	
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
+	    <property name="dataSource" ref="myDataSource" />  
+	    <property name="configLocation" value="classpath:mybatis-config.xml"></property> 
+	  <!--  <property name="mapperLocations" value="classpath*:com/immutable/alias/**/*.xml" /> -->
 	</bean> 
-	
-	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
-	  
-    	<property name="dataSource" ref="myDataSource">  
-    	</property>  
-    
-	    <property name="hibernateProperties">  
-	        <props>  
-	            <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>   <!-- 定义数据库方言 -->
-	            <prop key="hibernate.show_sql">true</prop>    <!-- 在控制台显示sql语句 -->
-	            <prop key="hibernate.format_sql">true</prop>  <!-- 格式化sql语句 -->
-	            <prop key="hibernate.hbm2ddl.auto">update</prop>    
-	        </props>  
-	    </property> 
-      
-       <!-- --> <property name="packagesToScan" value="com.xt.weixin.po"/> 
-     
-     <!--  
-	 <property name="annotatedClasses">             
-    	<list>                 
-    		<value>com.immutable.alias.pojos.User</value>                
-   		</list>         
-   	</property> 
-   	 -->
-   	 
-   	 
-   	 
-   	 
-	    <!--使用配置文件的方式
-	  <property name="mappingResources">
-    	<list>
-   		 <value>com/immutable/alias/pojos/User.hbm.xml</value>
-    	</list>
-	  </property>
-	    
-	     <property name="mappingDirectoryLocations">
-  		 <value>com/immutable/alias/pojos</value>
-  		 </property>
-	    -->
-	    
-</bean> 
-	
+	 
+	<bean id="userMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">  
+	    <property name="mapperInterface" value="com.immutable.alias.dao.UserMapper"></property>  
+	    <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>  
+	</bean> 
+		
 </beans>
