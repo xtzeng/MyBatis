@@ -39,12 +39,17 @@
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
 	    <property name="dataSource" ref="myDataSource" />  
 	    <property name="configLocation" value="classpath:mybatis-config.xml"></property> 
-	  <!--  <property name="mapperLocations" value="classpath*:com/immutable/alias/**/*.xml" /> -->
+	<!--   <property name="mapperLocations" value="classpath*:com/immutable/alias/**/*.xml" />  -->
 	</bean> 
 	 
-	<bean id="userMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">  
+<!--	<bean id="userMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">  
 	    <property name="mapperInterface" value="com.immutable.alias.dao.UserMapper"></property>  
 	    <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>  
-	</bean> 
+	</bean> -->
+	
+	<!-- 注册Mapper方式二：也可不指定特定mapper，而使用自动扫描包的方式来注册各种Mapper ，配置如下：-->  
+		<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
+		    <property name="basePackage" value="com.immutable.alias.dao" />  
+		</bean> 
 		
 </beans>
