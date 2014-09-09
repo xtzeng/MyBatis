@@ -76,7 +76,11 @@
 	<classifier>jdk15</classifier><!--指定jdk版本--> 
 </dependency>
 
-    
+    <dependency>
+		<groupId>com.google.code.gson</groupId>
+		<artifactId>gson</artifactId>
+		<version>2.2.4</version>
+	</dependency>
     
     
  <dependency>

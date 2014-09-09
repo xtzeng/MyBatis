@@ -5,6 +5,5 @@
 <configuration>
 	<mappers>
 		<mapper resource="com/immutable/alias/dao/UserMapper.xml"/>
-		<mapper resource="com/immutable/alias/dao/user.map.xml"/>
 	</mappers>
 </configuration>
