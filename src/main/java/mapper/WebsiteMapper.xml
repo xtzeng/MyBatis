@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="david.mybatis.demo.IWebsiteOperation">
+	<sql id="getListSql">
+		select id,
+		name, VisitorId, status, createTime from Website
+		where status>0
+	</sql>
+	<insert id="add" parameterType="Website" useGeneratedKeys="true"
+		keyProperty="Id">
+		insert into Website (Name, VisitorId, Status, CreateTime)
+		values (#{name}, #{visitorId}, #{status}, #{createTime})
+	</insert>
+	<delete id="delete" parameterType="int">
+		delete from website where
+		status>0 and id = #{id}
+	</delete>
+	<update id="update" parameterType="Website">
+		update website set
+		name=#{name} where status>0 and id=#{id}
+	</update>
+	<select id="getListByVisitorId" parameterType="BasicQueryArgs"
+		resultMap="websiteByVisitorIdRs">
+		<include refid="getListSql" />
+		<if test="queryId&gt;0">
+			and VisitorId = #{queryId}
+		</if>
+	</select>
+	<select id="query" parameterType="int" resultMap="websiteRs">
+		select
+		Website.id siteId, Website.name siteName, Visitor.Id visitorId,
+		Visitor.name visitorName,
+		Website.status siteStatus, Website.createtime
+		siteCreateTime from Website
+		inner join Visitor on Website.visitorid =
+		Visitor.id where Website.status>0 and
+		Website.id=#{id}
+	</select>
+	<resultMap type="Website" id="websiteRs">
+		<id column="siteId" property="id" />
+		<result column="siteName" property="name" />
+		<result column="siteStatus" property="status" />
+		<result column="siteCreateTime" property="createTime" />
+		<association property="visitor" javaType="Visitor"
+			resultMap="visitorRs" />
+	</resultMap>
+	<resultMap type="Visitor" id="visitorRs">
+		<id column="visitorId" property="id" />
+		<result column="visitorName" property="name" />
+	</resultMap>
+	<select id="getList" resultMap="websiteByVisitorIdRs">
+		<include refid="getListSql" />
+	</select>	
+	<resultMap type="Website" id="websiteByVisitorIdRs">
+		<id column="Id" property="id" />
+		<result column="Name" property="name" />
+		<result column="VisitorId" property="visitorId" />
+		<result column="Status" property="status" />
+		<result column="CreateTime" property="createTime" />
+	</resultMap>	
+</mapper>

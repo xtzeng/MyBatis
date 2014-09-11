@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="david.mybatis.demo.IVisitorOperation">
+	<!-- useGeneratedKeys="true"代表是否使用自增长序列, keyProperty="Id"指定自增长列是哪一列, parameterType="Visitor"指定IVisitorOperation接口类中定义中所传的相应类型 -->
+	<insert id="add" parameterType="Visitor" useGeneratedKeys="true"
+		keyProperty="Id">
+		insert into Visitor (Name, Email, Status, CreateTime)
+		values (#{name}, #{email}, #{status}, #{createTime})
+	</insert>
+	<delete id="delete" parameterType="int">
+		delete from Visitor where
+		status>0 and id = #{id}
+	</delete>
+	<update id="update" parameterType="Visitor">
+		update Visitor set Name =
+		#{name}, Email=#{email}, Status=#{status} where id=#{id} and Status>0;
+	</update>
+	<select id="query" parameterType="int" resultType="Visitor">
+		select Id,
+		Name, Email, Status, CreateTime from visitor where id=#{id} and
+		Status>0 order by Id
+	</select>
+	<select id="basicQuery" parameterType="int" resultType="Visitor">
+		select *
+		from visitor where id=#{id} and
+		Status>0 order by Id
+	</select>
+	<select id="getList" resultMap="visitorRs">
+		<include refid="getListSql" />
+	</select>
+	<resultMap type="Visitor" id="visitorRs">
+		<id column="Id" property="id" />
+		<result column="Name" property="name" />
+		<result column="Email" property="email" />
+		<result column="Status" property="status" />
+		<result column="CreateTime" property="createTime" />
+	</resultMap>
+	<select id="getListByPagenate" parameterType="PagenateArgs"
+		resultType="Visitor">
+		select * from (
+		<include refid="getListSql" />
+		<include refid="orderBySql" />
+		) t <!-- #{}表示参数化输出，${}表示直接输出不进行任何转义操作，自己进行转移 -->
+		<if test="pageStart>-1 and pageSize>-1">
+			limit #{pageStart}, #{pageSize}
+		</if>
+	</select>
+	<sql id="getListSql">
+		select * from Visitor where
+		status>0
+	</sql>
+	<sql id="orderBySql">
+		order by ${orderFieldStr} ${orderDirectionStr}
+	</sql>
+	<resultMap type="VisitorWithRn" id="visitorWithRnRs">
+		<id column="Id" property="id" />
+		<result column="Name" property="name" />
+		<result column="Email" property="email" />
+		<result column="Status" property="status" />
+		<result column="CreateTime" property="createTime" />
+		<result column="Rownum" property="rownum" />
+	</resultMap>
+	<select id="getListByPagenateWithRn" resultMap="visitorWithRnRs">
+		<!-- #{}表示参数化输出，${}表示直接输出不进行任何转义操作，自己进行转移 -->
+		select t.Rownum, t.Id, t.Name, t.Email, t.Status, t.CreateTime from (
+		<include refid="getListSqlContainsRn" />
+		<include refid="orderBySql" />
+		) t
+		<if test="pageStart>-1 and pageSize>-1">
+			limit #{pageStart}, #{pageSize}
+		</if>
+	</select>
+	<sql id="getListSqlContainsRn">
+		select @rownum:=@rownum+1 Rownum,
+		result.id, result.name,
+		result.email, result.status, result.createTime
+		FROM (
+		select @rownum:=0,
+		Visitor.* from Visitor where
+		status>0) result
+	</sql>
+	<sql id="getListSqlConditions">
+		select * from Visitor
+	</sql>
+	<!-- 满足其中一个条件时候用choose when操作 -->
+	<select id="getListChooseWhenDemo" resultMap="visitorRs"
+		parameterType="BasicQueryArgs">
+		<include refid="getListSqlConditions" />
+		<where>
+			<if test="queryStatus>0">
+				status=#{queryStatus}
+			</if>
+			<choose>
+				<when test="queryId!=0">
+					and id=#{queryId}
+				</when>
+				<when test="queryName!=null">
+					and name like #{queryName}
+				</when>
+				<otherwise>
+					and createTime>= #{queryTime}
+				</otherwise>
+			</choose>
+		</where>
+	</select>
+	<select id="getListWhereDemo" resultMap="visitorRs"
+		parameterType="BasicQueryArgs">
+		<include refid="getListSqlConditions" />
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="queryStatus>0">
+				status>0
+			</if>
+			<if test="queryId>0">
+				and id=#{queryId}
+			</if>
+			<if test="queryName!=null">
+				and name like=#{queryName}
+			</if>
+			<if test="queryTime!=null">
+				and createTime>=#{queryTime}
+			</if>
+		</trim>
+		<!-- <where> <if test="queryStatus>0"> status>0 </if> <if test="queryId>0"> 
+			and id=#{queryId} </if> <if test="queryName!=null"> and name like=#{queryName} 
+			</if> <if test="queryTime!=null"> and createTime>=#{queryTime} </if> </where> -->
+	</select>
+	<select id="getListForeachDemo" resultMap="visitorRs">
+		<include refid="getListSqlConditions"/>
+		where status>0 and id in 
+		<foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+			${item}
+		</foreach>
+	</select>
+</mapper>

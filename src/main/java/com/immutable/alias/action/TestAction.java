@@ -29,4 +29,9 @@ public class TestAction extends BaseAction{
 			logger.info("hello ===========jj");
 			return dispatch("/jsp/test.jsp");
 		}
+	
+	public Result inface() {
+		testService.testInterface();
+		return dispatch("/jsp/inface.jsp");
+	}
 }
