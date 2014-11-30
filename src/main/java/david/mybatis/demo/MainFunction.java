@@ -14,24 +14,24 @@ public class MainFunction {
 	public static void main(String[] args) {
 
 //		 DemoRun.addVisitors();
-		// DemoRun.addVisitor(new Visitor("新增测试DB", "mysqldb@gmail.com"));
+//		 DemoRun.addVisitor(new Visitor("新增测试DB", "mysqldb@gmail.com"));
 //		 DemoRun.queryVisitor(11);
-		// DemoRun.updateVisitor(11);
-		// DemoRun.deleteVisitor(11);
-		// DemoRun.queryVisitorList();
+//		 DemoRun.updateVisitor(11);
+//		 DemoRun.deleteVisitor(11);
+//		 DemoRun.queryVisitorList();
 		// System.out.println("----------分割线----------");
 		// DemoRun.queryVisitorListWithPagenate(1, 5, "id",
 		// SortDirectionEnum.DESC.toString());
 		// System.out.println("--------------具有Rownum的显示方式---------------");
 		// DemoRun.queryVisitorListWithRnPagenate(1, 5, "id",
 		// SortDirectionEnum.DESC.toString());
-		// DemoRun.addWebsite(new Website("果壳网", 4));
-		// DemoRun.queryWebsite(2);
-		// DemoRun.deleteWebsite(3);
-		// DemoRun.updateWebsite(2);
-		// DemoRun.addWebsites();
+//		 DemoRun.addWebsite(new Website("果壳网", 4));
+//		 DemoRun.queryWebsite(2);
+//		 DemoRun.deleteWebsite(3);
+//		 DemoRun.updateWebsite(2);
+//		 DemoRun.addWebsites();
 		// DemoRun.queryWebsiteListByVisitorId(new BasicQueryArgs(2));
-		// DemoRun.queryWebsiteList();
+//		 DemoRun.queryWebsiteList();
 
 		// DemoRun.addChannel(new Channel("社交频道", 6));
 		// DemoRun.addChannels();

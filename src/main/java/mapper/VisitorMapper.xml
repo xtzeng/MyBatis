@@ -9,27 +9,33 @@
 		insert into Visitor (Name, Email, Status, CreateTime)
 		values (#{name}, #{email}, #{status}, #{createTime})
 	</insert>
+	
 	<delete id="delete" parameterType="int">
 		delete from Visitor where
 		status>0 and id = #{id}
 	</delete>
+	
 	<update id="update" parameterType="Visitor">
 		update Visitor set Name =
 		#{name}, Email=#{email}, Status=#{status} where id=#{id} and Status>0;
 	</update>
+	
 	<select id="query" parameterType="int" resultType="Visitor">
 		select Id,
 		Name, Email, Status, CreateTime from visitor where id=#{id} and
 		Status>0 order by Id
 	</select>
+	
 	<select id="basicQuery" parameterType="int" resultType="Visitor">
 		select *
 		from visitor where id=#{id} and
-		Status>0 order by Id
+		status>0 order by Id
 	</select>
+	
 	<select id="getList" resultMap="visitorRs">
 		<include refid="getListSql" />
 	</select>
+	
 	<resultMap type="Visitor" id="visitorRs">
 		<id column="Id" property="id" />
 		<result column="Name" property="name" />
@@ -37,6 +43,7 @@
 		<result column="Status" property="status" />
 		<result column="CreateTime" property="createTime" />
 	</resultMap>
+	
 	<select id="getListByPagenate" parameterType="PagenateArgs"
 		resultType="Visitor">
 		select * from (
@@ -62,6 +69,7 @@
 		<result column="CreateTime" property="createTime" />
 		<result column="Rownum" property="rownum" />
 	</resultMap>
+	
 	<select id="getListByPagenateWithRn" resultMap="visitorWithRnRs">
 		<!-- #{}表示参数化输出，${}表示直接输出不进行任何转义操作，自己进行转移 -->
 		select t.Rownum, t.Id, t.Name, t.Email, t.Status, t.CreateTime from (
@@ -105,6 +113,7 @@
 			</choose>
 		</where>
 	</select>
+	
 	<select id="getListWhereDemo" resultMap="visitorRs"
 		parameterType="BasicQueryArgs">
 		<include refid="getListSqlConditions" />
@@ -126,6 +135,7 @@
 			and id=#{queryId} </if> <if test="queryName!=null"> and name like=#{queryName} 
 			</if> <if test="queryTime!=null"> and createTime>=#{queryTime} </if> </where> -->
 	</select>
+	
 	<select id="getListForeachDemo" resultMap="visitorRs">
 		<include refid="getListSqlConditions"/>
 		where status>0 and id in 
